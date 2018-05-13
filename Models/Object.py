@@ -15,17 +15,15 @@ class Object(pygame.sprite.Sprite):
     ------------
     u_int(2)    _position
     u_int(2)    _size
-    u_int(2)    _scaledSize
 
 
     Surface     _normalImage
-    Surface     _scaledImage
 
     -------------
     public:
     -------------
     void        setPosition(u_int x, u_int y)
-    void        scale()
+    void        setSize(u_int x, u_int y)
 
 
     ------------
@@ -44,16 +42,11 @@ class Object(pygame.sprite.Sprite):
 
         # Position, size, controlVariables:
         self._position = list(position)
-        self.rect = None
-
         self._size = list(size)
-        self._scaledSize = self._sizeScale(scaleCoeff)
-        print(self._scaledSize)
+        self.rect = None
 
         # LookOut:
         self._normalImage = normalImage
-        self._scaledImage = scaledImage
-        self._clickedImage = clickedImage
         self.image = None
 
         # SpriteInit:
@@ -69,8 +62,9 @@ class Object(pygame.sprite.Sprite):
         self._position[1] = y
         pass
 
-    def scale(self, bool):
-
+    def setSize(self, x, y):
+        # TODO: Exception: x<0; y<0
+        self.image = self._normalImage
         pass
 
     # Protected:
@@ -78,16 +72,10 @@ class Object(pygame.sprite.Sprite):
     def _spriteInit(self):
 
         self._normalImage = pygame.transform.scale(self._normalImage, self._size)
-        self._scaledImage = pygame.transform.scale(self._scaledImage, self._scaledSize)
 
         self.image = self._normalImage
         self.rect = self.image.get_rect()
         self.setPosition(self._position[0], self._position[1])
         pass
 
-    def _sizeScale(self, scaleCoeff):
-        a = self._size[0]*scaleCoeff // 1
-        b = self._size[1]*scaleCoeff // 1
-        return list((int(a), int(b)))
-        pass
 

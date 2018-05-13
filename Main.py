@@ -23,7 +23,7 @@ if __name__ == "__main__":
 
     spriteGroup = pygame.sprite.Group()
     normalImage = pygame.image.load("./Files/blender.png")
-    sprite1 = Object(normalImage, normalImage, normalImage, (40,40), (60,60))
+    sprite1 = Object(normalImage, normalImage, normalImage, (40, 40), (60, 60))
     spriteGroup.add(sprite1)
     spriteGroup.draw(screen)
 
