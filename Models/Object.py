@@ -1,5 +1,5 @@
 import pygame
-
+from Control.MyException import *
 
 class Object(pygame.sprite.Sprite):
 
@@ -14,8 +14,8 @@ class Object(pygame.sprite.Sprite):
     protected:
     ------------
     u_int(2)    _position
+    u_int(2)    _basicSize
     u_int(2)    _size
-
 
     Surface     _normalImage
 
@@ -24,7 +24,6 @@ class Object(pygame.sprite.Sprite):
     -------------
     void        setPosition(u_int x, u_int y)
     void        setSize(u_int x, u_int y)
-
 
     ------------
     protected:
@@ -35,13 +34,14 @@ class Object(pygame.sprite.Sprite):
     """
 
     # Constructors:
-    def __init__(self, normalImage, scaledImage, clickedImage, position=(0, 0), size=(10, 10), scaleCoeff=1.5):
+    def __init__(self, normalImage, size=(10, 10), position=(0, 0), scaleCoeff=1.5):
 
         # Sprite constructor:
         super().__init__()
 
         # Position, size, controlVariables:
         self._position = list(position)
+        self._basicSize = list(size)
         self._size = list(size)
         self.rect = None
 
@@ -55,7 +55,9 @@ class Object(pygame.sprite.Sprite):
     # Public:
 
     def setPosition(self, x, y):
-        # TODO: Exception: x<0; y<0
+        if x < 0 or y < 0:
+            raise MyException("x an y must be greater than 0!")
+
         self.rect.x = x
         self.rect.y = y
         self._position[0] = x
@@ -63,17 +65,20 @@ class Object(pygame.sprite.Sprite):
         pass
 
     def setSize(self, x, y):
-        # TODO: Exception: x<0; y<0
+        if x < 0 or y < 0:
+            raise MyException("x an y must be greater than 0!")
+
         self.image = self._normalImage
+        self._size = (x, y)
+        self.image = pygame.transform.scale(self._normalImage, self._size)
         pass
 
     # Protected:
 
     def _spriteInit(self):
 
-        self._normalImage = pygame.transform.scale(self._normalImage, self._size)
-
         self.image = self._normalImage
+        self.image = pygame.transform.scale(self._normalImage, self._size)
         self.rect = self.image.get_rect()
         self.setPosition(self._position[0], self._position[1])
         pass
