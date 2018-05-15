@@ -1,5 +1,6 @@
 import pygame
 from Control.Settings import *
+from Models.Product import *
 import Colors
 
 class MainWindow:
@@ -13,17 +14,24 @@ class MainWindow:
     protected:
     ------------
     Surface         _screen
+    Settings        _settings
+    Group           _productsSpriteGroup
+    Group           _anotherSpriteGroup
 
-    ------------
-    private:
-    ------------
-    Settings        __settings
-    Group           __
 
     -------------
     public:
     -------------
-    void            run()
+    void            gameLoop()
+    void            addToProductsSpriteGroup(Sprite productObject)
+    void            addToAnotherSpriteGroup(Sprite obj)
+
+    void            fillScreen()
+
+    void            drawProducts()
+    void            drawAnotherSprites()
+
+    void            setProductsPositions(Product[] products)
 
     ------------
     protected:
@@ -34,22 +42,26 @@ class MainWindow:
     """
 
     def __init__(self):
-        self.__settings = Settings.getInstance()
+        self._settings = Settings.getInstance()
 
         # SetScreen:
         self._screen = None
         self._setScreen()
 
         # Background:
-        self._fillColor = self.__settings.backgroundColor
+        self._fillColor = self._settings.backgroundColor
+
+        # SpriteGroups:
+        self.__productsSpriteGroup = pygame.sprite.Group()
+        self.__anotherSpriteGroup = pygame.sprite.Group()
         pass
 
 
     def _setScreen(self):
         # Settings form SettingSingleton:
-        resolution = self.__settings.windowSize
-        tittle = self.__settings.windowTittle
-        icon = self.__settings.windowIcon
+        resolution = self._settings.windowSize
+        tittle = self._settings.windowTittle
+        icon = self._settings.windowIcon
 
         # Setting window parameters:
         self._screen = pygame.display.set_mode(resolution)
@@ -57,23 +69,27 @@ class MainWindow:
         # TODO: set icon!
         pass
 
+    def addToProductsSpriteGroup(self, productObj):
+        self.__productsSpriteGroup.add(productObj)
 
-    def _eventsQueue(self):
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                return False
-            if event.type == pygame.KEYUP:
-                if event.key == pygame.K_ESCAPE:
-                    return False
-        return True
+    def addToAnotherSpriteGroup(self, obj):
+        self.__anotherSpriteGroup.add(obj)
+
+    def fillScreen(self):
+        self._screen.fill(self._settings.backgroundColor)
+
+    def drawProducts(self):
+        self.__productsSpriteGroup.draw(self._screen)
+
+    def drawAnotherSprites(self):
+        self.__anotherSpriteGroup.draw(self._screen)
+
+    def setProductsPositions(self, products):
+
+        for i in range(0, len(products)):
+            Product(i).setPosition()
+
         pass
 
 
-    def run(self):
-        con = True
-        while con:
-            self._screen.fill(self.__settings.backgroundColor)
-            con = self._eventsQueue()
 
-            pygame.display.update()
-        pass

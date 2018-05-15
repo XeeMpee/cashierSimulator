@@ -11,3 +11,8 @@ class MyTypeException(Exception):
 class MyDataRangeException(Exception):
     def __init__(self, message):
         self.message = message
+
+
+class MyQuantityException(Exception):
+    def __init__(self, message):
+        self.message = message

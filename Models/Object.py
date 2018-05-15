@@ -13,6 +13,7 @@ class Object(pygame.sprite.Sprite):
     ------------
     protected:
     ------------
+    string      _name
     u_int(2)    _position
     u_int(2)    _basicSize
     u_int(2)    _size
@@ -24,6 +25,10 @@ class Object(pygame.sprite.Sprite):
     -------------
     void        setPosition(u_int x, u_int y)
     void        setSize(u_int x, u_int y)
+    void        setImage(Surface image)
+
+    u_int(2)    getPosition()
+    u_int(2)    getSize()
 
     ------------
     protected:
@@ -34,12 +39,13 @@ class Object(pygame.sprite.Sprite):
     """
 
     # Constructors:
-    def __init__(self, normalImage, size=(10, 10), position=(0, 0), scaleCoeff=1.5):
+    def __init__(self, name, size=(60, 60), position=(0, 0), normalImage=None):
 
         # Sprite constructor:
         super().__init__()
 
         # Position, size, controlVariables:
+        self._name = name
         self._position = list(position)
         self._basicSize = list(size)
         self._size = list(size)
@@ -64,6 +70,10 @@ class Object(pygame.sprite.Sprite):
         self._position[1] = y
         pass
 
+    def getPosition(self):
+        return self._position[0], self._position[1]
+
+
     def setSize(self, x, y):
         if x < 0 or y < 0:
             raise MyException("x an y must be greater than 0!")
@@ -72,6 +82,16 @@ class Object(pygame.sprite.Sprite):
         self._size = (x, y)
         self.image = pygame.transform.scale(self._normalImage, self._size)
         pass
+
+    def getSize(self):
+        return self._size[0], self._size[1]
+
+
+    def setImage(self, image):
+        self._normalImage = image
+        self.image = image
+        pass
+
 
     # Protected:
 

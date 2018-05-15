@@ -2,6 +2,7 @@ import pygame
 from Models.Object import *
 from View.MainWindow import *
 from Control.Settings import Settings
+from Control.GameController import *
 
 
 def eventsQueue(obj1):
@@ -49,5 +50,8 @@ if __name__ == "__main__":
     #     pygame.display.update()
     #     pygameClock.tick(fps)
 
-    mainWindow = MainWindow()
-    mainWindow.run()
+    # mainWindow = MainWindow()
+    # mainWindow.run()
+
+    game = GameController()
+    game.run()
