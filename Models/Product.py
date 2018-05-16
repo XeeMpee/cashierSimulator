@@ -87,7 +87,6 @@ class Product(Object):
             sizeX = self.__settings.normalSize[0]
             sizeY = self.__settings.normalSize[1]
             self.setSize(sizeX, sizeY)
-            #self.rect = self.image.get_rect()
-            # TODO: Ma odszkalowywać! xD
+            # self.rect = self.image.get_rect()
 
 

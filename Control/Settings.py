@@ -30,6 +30,14 @@ class Settings:
             self.cashRegisterSize = 650, 600
             self.cashRegisterPosition = 700, 120
 
+            # CashRegisterButtons:
+            self.__bStartX = 120
+            self.__bStartY = 140
+            self.numberButtonSize = 70, 70
+            self.buttonsPositionStart = (self.cashRegisterPosition[0] + self.__bStartX, self.cashRegisterPosition[1] + self.__bStartY)
+            self.buttonDistanceX = 80
+            self.buttonDistanceY = 80
+
             # NewCustomerButton
             self.newCustomerButtonPosition = 35, 20
             self.newCustomerButtonSize = 350, 100

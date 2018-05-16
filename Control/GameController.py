@@ -27,6 +27,7 @@ class GameController:
     Object              _plate
     Object              _cashRegister
     u_int               _productCounter
+    Button[]            _cashierButton
 
     -------------
     public:
@@ -66,11 +67,21 @@ class GameController:
         self._cashRegister = Object("cashRegister", self._settings.cashRegisterSize, self._settings.cashRegisterPosition, TextureMenager.getAnotherTextures("cashRegister"))
         self.gameWindow.addToAnotherSpriteGroup(self._cashRegister)
 
+        # CashRegisterButtons:
+        self._cashRegisterButtons = []
+
+        for i in range(0, 10):
+            TextureMenager.buttonsTexturesAppend(str(i))
+            TextureMenager.buttonsTexturesAppend(str(i) + "Clicked")
+            self._cashRegisterButtons.append(Button(str(i), self._settings.numberButtonSize, (0,0), TextureMenager.getButtonTextures(str(i)), TextureMenager.getButtonTextures(str(i) + "Clicked")))
+            self.gameWindow.addToButtonsSpriteGroup(self._cashRegisterButtons[i])
+            pass
+        self.gameWindow.cashRegisterButtonPlace(self._cashRegisterButtons)
+
         # Game Objects:
         TextureMenager.anotherTexturesAppend("plate")
         self._plate = Object("plate", self._settings.plateSize, self._settings.platePosition, TextureMenager.getAnotherTextures("plate"))
         self.gameWindow.addToAnotherSpriteGroup(self._plate)
-        # self._newCustomerButton = Button("newCustomer")
 
 
 
@@ -205,6 +216,16 @@ class GameController:
                 if event.key == pygame.K_1:
                     print("1 pressed")
                     # self.generateActualProduct()
+
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                # cashRegisterButtonsEvents:
+                x, y = pygame.mouse.get_pos()
+                for i in self._cashRegisterButtons:
+                    if i.rect.collidepoint(x, y):
+                        if i.getBlockedFlag() is False:
+                            i.clicked()
+
             if event.type == pygame.MOUSEBUTTONUP:
                 # self.newCustomerButtonClick()
                 print("clicked")
@@ -217,12 +238,21 @@ class GameController:
                         self._generateActualProduct()
                     self._newCustomerButton.clicked()
 
+                for i in self._cashRegisterButtons:
+                    if i.getBlockedFlag() is True:
+                        i.unblock()
+
+
+
+
+
                 # ProductClicked:
                 try:
                     if self._actualProduct.rect.collidepoint(x, y):
                         self._generateActualProduct()
                 except AttributeError:
                     pass
+        pass
 
 
 

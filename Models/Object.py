@@ -81,6 +81,7 @@ class Object(pygame.sprite.Sprite):
         self.image = self._normalImage
         self._size = (x, y)
         self.image = pygame.transform.scale(self._normalImage, self._size)
+        # self.rect = self.image.get_rect()
         pass
 
     def getSize(self):

@@ -122,6 +122,17 @@ class MainWindow:
             pass
         pass
 
+    def cashRegisterButtonPlace(self, cashierButtons):
+        positionX = self._settings.buttonsPositionStart[0]
+        positionY = self._settings.buttonsPositionStart[1]
+        for i in range(0, len(cashierButtons)):
+            if i % 3 == 0:
+                positionY += self._settings.buttonDistanceY
+                positionX = self._settings.buttonsPositionStart[0]
+            cashierButtons[i].setPosition(positionX, positionY)
+            positionX += self._settings.buttonDistanceX
+
+        pass
 
     # # Zabawne: xD
     # def productScaleAnimation(self, product):
