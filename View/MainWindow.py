@@ -111,5 +111,26 @@ class MainWindow:
         obj.setPosition(x, y)
         return obj
 
+    def productScaleAnimation(self, product):
+        x, y = pygame.mouse.get_pos()
+        try:
+            if product.rect.collidepoint(x, y):
+                product.scale()
+            # else:
+                # product.setSize(x, y)
+        except AttributeError:
+            pass
+        pass
 
 
+    # # Zabawne: xD
+    # def productScaleAnimation(self, product):
+    #     x, y = pygame.mouse.get_pos()
+    #     try:
+    #         if product.rect.collidepoint(x, y):
+    #             product.scale()
+    #         else:
+    #             product.setSize(x, y)
+    #     except AttributeError:
+    #         pass
+    #     pass

@@ -36,6 +36,7 @@ class Settings:
             self.minWeight = 0.05
 
             self.normalSize = (100, 100)
+            self.scaledSize = (150, 150)
 
             # position borders:
             # |------------|

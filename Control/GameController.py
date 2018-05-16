@@ -236,7 +236,7 @@ class GameController:
                 # ProductClicked:
                 try:
                     if self._actualProduct.rect.collidepoint(x, y):
-                      self._generateActualProduct()
+                        self._generateActualProduct()
                 except AttributeError:
                     pass
 
@@ -255,6 +255,7 @@ class GameController:
             self.gameWindow.drawAnotherSprites()
             self.gameWindow.drawProducts()
             self.gameWindow.drawButtons()
+            self.gameWindow.productScaleAnimation(self._actualProduct)
             con = self._eventsQueue()
 
             pygame.display.update()
