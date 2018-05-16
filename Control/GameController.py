@@ -25,6 +25,7 @@ class GameController:
     Product[]           _products
     Product             _actualProduct
     Object              _plate
+    Object              _cashRegister
     u_int               _productCounter
 
     -------------
@@ -59,6 +60,11 @@ class GameController:
         TextureMenager.buttonsTexturesAppend("newCustomerClicked")
         self._newCustomerButton = Button("newCustomerButton", self._settings.newCustomerButtonSize, self._settings.newCustomerButtonPosition, TextureMenager.getButtonTextures("newCustomer"), TextureMenager.getButtonTextures("newCustomerClicked"))
         self.gameWindow.addToButtonsSpriteGroup(self._newCustomerButton)
+
+        # CashRegister:
+        TextureMenager.anotherTexturesAppend("cashRegister")
+        self._cashRegister = Object("cashRegister", self._settings.cashRegisterSize, self._settings.cashRegisterPosition, TextureMenager.getAnotherTextures("cashRegister"))
+        self.gameWindow.addToAnotherSpriteGroup(self._cashRegister)
 
         # Game Objects:
         TextureMenager.anotherTexturesAppend("plate")
@@ -178,28 +184,6 @@ class GameController:
         self._actualProduct = self.gameWindow.setProductsPosition(self._actualProduct)
 
     # --------------------------------------------------
-
-
-
-    # --------------------------------------------------
-    # NewCustomerButton actions:
-    # def newCustomerButtonScaleAnimation(self):
-    #     if self._newCustomerButton.clicked is True:
-    #         return
-    #     self.gameWindow.newCustomerButtonScale(self._newCustomerButton)
-    #
-    # def newCustomerButtonClick(self):
-    #     if self._newCustomerButton.clicked is True:
-    #         return
-    #     else:
-    #         if self._newCustomerButton.scaled is not True:
-    #             return
-    #         else:
-    #             self._newCustomerButton.click()
-    #             self.generateProducts()
-    #             self._actualProduct = self.__products[0]
-    #             self.generateActualProduct()
-    # # --------------------------------------------------
 
 
     # --------------------------------------------------

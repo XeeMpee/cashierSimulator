@@ -26,6 +26,10 @@ class Settings:
             self.plateSize = 600, 600
             self.platePosition = 40, 120
 
+            # CashRegister:
+            self.cashRegisterSize = 650, 600
+            self.cashRegisterPosition = 700, 120
+
             # NewCustomerButton
             self.newCustomerButtonPosition = 35, 20
             self.newCustomerButtonSize = 350, 100
@@ -44,12 +48,14 @@ class Settings:
             # |            |
             # |2         3 |
             # |------------|
-            self.__marginX = 100
-            self.__marginY = 100
-            self.productsBorders = [(self.platePosition[0]+self.__marginX, self.platePosition[1] + self.__marginY),
-                                    (self.platePosition[0] + self.plateSize[0] - self.__marginX, self.platePosition[1] + self.__marginY),
-                                    (self.platePosition[0] + self.__marginX, self.platePosition[1] + self.plateSize[1] - self.__marginY),
-                                    (self.platePosition[0] + self.plateSize[0] - self.__marginX, self.platePosition[1] + self.plateSize[1] - self.__marginY)]
+            self.__marginLX = 60
+            self.__marginRX = 150
+            self.__marginUY = 60
+            self.__marginLY = 150
+            self.productsBorders = [(self.platePosition[0] + self.__marginLX, self.platePosition[1] + self.__marginUY),
+                                    (self.platePosition[0] + self.plateSize[0] - self.__marginRX, self.platePosition[1] + self.__marginUY),
+                                    (self.platePosition[0] + self.__marginLX, self.platePosition[1] + self.plateSize[1] - self.__marginLY),
+                                    (self.platePosition[0] + self.plateSize[0] - self.__marginRX, self.platePosition[1] + self.plateSize[1] - self.__marginLY)]
 
 
             # Scale Coeff:

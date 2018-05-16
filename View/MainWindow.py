@@ -116,8 +116,8 @@ class MainWindow:
         try:
             if product.rect.collidepoint(x, y):
                 product.scale()
-            # else:
-                # product.setSize(x, y)
+            else:
+                product.descale()
         except AttributeError:
             pass
         pass
