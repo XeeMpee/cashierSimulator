@@ -2,6 +2,7 @@ import pygame
 from Control.Settings import *
 from Models.Product import *
 import Colors
+import random
 
 class MainWindow:
 
@@ -17,6 +18,7 @@ class MainWindow:
     Settings        _settings
     Group           _productsSpriteGroup
     Group           _anotherSpriteGroup
+    Group           _buttonsGroup
 
 
     -------------
@@ -24,14 +26,18 @@ class MainWindow:
     -------------
     void            gameLoop()
     void            addToProductsSpriteGroup(Sprite productObject)
+    void            clearProductsSpriteGroup()
     void            addToAnotherSpriteGroup(Sprite obj)
+    void            addToButtonsGroup(Button obj)
 
     void            fillScreen()
 
     void            drawProducts()
     void            drawAnotherSprites()
+    void            drawButtonsSprites()
 
-    void            setProductsPositions(Product[] products)
+    void            setProductsPosition(Product product)
+    void            setProductPosition()
 
     ------------
     protected:
@@ -54,6 +60,7 @@ class MainWindow:
         # SpriteGroups:
         self.__productsSpriteGroup = pygame.sprite.Group()
         self.__anotherSpriteGroup = pygame.sprite.Group()
+        self.__buttonsGroup = pygame.sprite.Group()
         pass
 
 
@@ -72,8 +79,14 @@ class MainWindow:
     def addToProductsSpriteGroup(self, productObj):
         self.__productsSpriteGroup.add(productObj)
 
+    def clearProductsSpriteGroup(self):
+        self.__productsSpriteGroup.empty()
+
     def addToAnotherSpriteGroup(self, obj):
         self.__anotherSpriteGroup.add(obj)
+
+    def addToButtonsSpriteGroup(self, obj):
+        self.__buttonsGroup.add(obj)
 
     def fillScreen(self):
         self._screen.fill(self._settings.backgroundColor)
@@ -84,12 +97,19 @@ class MainWindow:
     def drawAnotherSprites(self):
         self.__anotherSpriteGroup.draw(self._screen)
 
-    def setProductsPositions(self, products):
+    def drawButtons(self):
+        self.__buttonsGroup.draw(self._screen)
+    #
+    # def setProductsPosition(self, product):
+    #     product.setPosition()
+    #     pass
 
-        for i in range(0, len(products)):
-            Product(i).setPosition()
+    def setProductsPosition(self, obj):
 
-        pass
+        x = random.randint(self._settings.productsBorders[0][0], self._settings.productsBorders[1][0])
+        y = random.randint(self._settings.productsBorders[0][1], self._settings.productsBorders[2][1])
+        obj.setPosition(x, y)
+        return obj
 
 
 

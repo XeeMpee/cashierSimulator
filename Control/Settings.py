@@ -26,6 +26,10 @@ class Settings:
             self.plateSize = 600, 600
             self.platePosition = 40, 120
 
+            # NewCustomerButton
+            self.newCustomerButtonPosition = 35, 20
+            self.newCustomerButtonSize = 350, 100
+
             # Products:
             self.maxAmount = 50
             self.maxWeight = 2
@@ -39,8 +43,8 @@ class Settings:
             # |            |
             # |2         3 |
             # |------------|
-            self.__marginX = 20
-            self.__marginY = 20
+            self.__marginX = 100
+            self.__marginY = 100
             self.productsBorders = [(self.platePosition[0]+self.__marginX, self.platePosition[1] + self.__marginY),
                                     (self.platePosition[0] + self.plateSize[0] - self.__marginX, self.platePosition[1] + self.__marginY),
                                     (self.platePosition[0] + self.__marginX, self.platePosition[1] + self.plateSize[1] - self.__marginY),

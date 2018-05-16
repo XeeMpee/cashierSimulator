@@ -2,6 +2,7 @@ import pygame
 from Models.Product import *
 from Models.WeightProduct import *
 from Models.RetailProduct import *
+from Models.Button import *
 from Control.Settings import *
 from View.TexturesMenager import *
 from View.MainWindow import *
@@ -22,7 +23,9 @@ class GameController:
     Product[]           _allRetailProductsList
     Product[]           _allWeightProductsList
     Product[]           _products
+    Product             _actualProduct
     Object              _plate
+    u_int               _productCounter
 
     -------------
     public:
@@ -34,6 +37,7 @@ class GameController:
     ------------
     void                _createAllProductsLists()
     void                _generateProducts()
+    void                _generateActualProduct()
     bool                _eventsQueue()
     void                _plateCreate()
 
@@ -49,9 +53,12 @@ class GameController:
 
         # GameWindow
         self.gameWindow = MainWindow()
-        # self.gameWindow.addToBasicSpritesGroup(self._cashierPlate)
-        # self.gameWindow.addToButtonsSpritesGroup(self._newCustomerButton)
 
+        # NewCustomerButton:
+        TextureMenager.buttonsTexturesAppend("newCustomer")
+        TextureMenager.buttonsTexturesAppend("newCustomerClicked")
+        self._newCustomerButton = Button("newCustomerButton", self._settings.newCustomerButtonSize, self._settings.newCustomerButtonPosition, TextureMenager.getButtonTextures("newCustomer"), TextureMenager.getButtonTextures("newCustomerClicked"))
+        self.gameWindow.addToButtonsSpriteGroup(self._newCustomerButton)
 
         # Game Objects:
         TextureMenager.anotherTexturesAppend("plate")
@@ -115,7 +122,7 @@ class GameController:
                     tmpProduct = WeightProduct(drawnProductName, weight, size, (0, 0), tmpTexture)
 
                     self._products.append(tmpProduct)
-                    self.gameWindow.addToProductsSpriteGroup(tmpProduct)
+                    # self.gameWindow.addToProductsSpriteGroup(tmpProduct)
                     con = False
 
         for i in range(0, numOfRetailProducts):
@@ -135,10 +142,10 @@ class GameController:
                     tmpProduct = RetailProduct(drawnProductName, amount, size, (0, 0), tmpTexture)
 
                     self._products.append(tmpProduct)
-                    self.gameWindow.addToProductsSpriteGroup(tmpProduct)
+                    # self.gameWindow.addToProductsSpriteGroup(tmpProduct)
                     con = False
 
-        # Randomizing created list:g
+        # Randomizing created list:
         random.shuffle(self._products)
 
         # Display list in terminal:
@@ -158,30 +165,19 @@ class GameController:
 
     # --------------------------------------------------
     # ActualProduct actions:
-    # def generateActualProduct(self):
-    #     if self._actualProduct is None:
-    #         self.gameWindow.deleteActualProduct()
-    #         self._newCustomerButton.clicked = False
-    #         return
-    #
-    #     self._actualProduct = self.__products[self.__productsCounter]
-    #     self.gameWindow.setActualProductPosition(self._actualProduct, self.__cashierPlate)
-    #     self._productsCounter += 1
-    #     if self._productsCounter == len(self.__products):
-    #         self._actualProduct = None
-    #
-    #
-    # def actualProductScaleAnimation(self):
-    #     if self._actualProduct is None:
-    #         return
-    #     self.gameWindow.actualProductScale(self._actualProduct)
-    #
-    #
-    # def actualProductClicked(self):
-    #     if self._actualProduct is not None:
-    #         if self._actualProduct.clicked is True:
-    #             pass
-    # # --------------------------------------------------
+    def _generateActualProduct(self):
+        if self._productsCounter == len(self._products):
+            self._actualProduct = None
+            self.gameWindow.clearProductsSpriteGroup()
+            self._newCustomerButton.unblock()
+            return
+        self._actualProduct = self._products[self._productsCounter]
+        self._productsCounter += 1
+        self.gameWindow.clearProductsSpriteGroup()
+        self.gameWindow.addToProductsSpriteGroup(self._actualProduct)
+        self._actualProduct = self.gameWindow.setProductsPosition(self._actualProduct)
+
+    # --------------------------------------------------
 
 
 
@@ -228,6 +224,24 @@ class GameController:
             if event.type == pygame.MOUSEBUTTONUP:
                 # self.newCustomerButtonClick()
                 print("clicked")
+                x, y = pygame.mouse.get_pos()
+
+                # NewCustomerButtonEvents:
+                if self._newCustomerButton.rect.collidepoint(x, y):
+                    if self._newCustomerButton.getBlockedFlag() is False:
+                        self._generateProducts()
+                        self._generateActualProduct()
+                    self._newCustomerButton.clicked()
+
+                # ProductClicked:
+                try:
+                    if self._actualProduct.rect.collidepoint(x, y):
+                      self._generateActualProduct()
+                except AttributeError:
+                    pass
+
+
+
         return True
     # --------------------------------------------------
 
@@ -238,8 +252,9 @@ class GameController:
         con = True
         while con:
             self.gameWindow.fillScreen()
-            self.gameWindow.drawProducts()
             self.gameWindow.drawAnotherSprites()
+            self.gameWindow.drawProducts()
+            self.gameWindow.drawButtons()
             con = self._eventsQueue()
 
             pygame.display.update()

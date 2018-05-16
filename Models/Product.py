@@ -16,9 +16,10 @@ class Product(Object):
     -------------
     public:
     -------------
-    void        _setName(string name)
-    string      _getName
-    void        _printInfo()
+    void        setName(string name)
+    string      getName
+    void        printInfo()
+    void        clicked()
 
     ------------
     protected:
@@ -50,3 +51,7 @@ class Product(Object):
 
     def printName(self):
         print(self._name)
+
+
+    def clicked(self):
+        pass

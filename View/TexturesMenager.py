@@ -4,6 +4,7 @@ import pygame
 class TextureMenager:
 
     productsTextures = dict()
+    buttonsTextures = dict()
     anotherTextures = dict()
 
     def __init__(self):
@@ -28,3 +29,14 @@ class TextureMenager:
     @staticmethod
     def getAnotherTextures(key):
         return TextureMenager.productsTextures[key]
+
+    @staticmethod
+    def buttonsTexturesAppend(key):
+        value = pygame.image.load("./Files/ButtonsTextures/" + key + ".png")
+        TextureMenager.buttonsTextures[key] = value
+        pass
+
+    @staticmethod
+    def getButtonTextures(key):
+        return TextureMenager.buttonsTextures[key]
+
