@@ -73,6 +73,9 @@ class Object(pygame.sprite.Sprite):
     def getPosition(self):
         return self._position[0], self._position[1]
 
+    def getName(self):
+        return str(self._name)
+
 
     def setSize(self, x, y):
         if x < 0 or y < 0:

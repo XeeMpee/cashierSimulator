@@ -61,6 +61,10 @@ class MainWindow:
         self.__productsSpriteGroup = pygame.sprite.Group()
         self.__anotherSpriteGroup = pygame.sprite.Group()
         self.__buttonsGroup = pygame.sprite.Group()
+
+        # Font
+        pygame.font.init()
+        self.font = pygame.font.SysFont(self._settings.cashRegisterValueFont, self._settings.cashRegisterValueSize)
         pass
 
 
@@ -125,23 +129,31 @@ class MainWindow:
     def cashRegisterButtonPlace(self, cashierButtons):
         positionX = self._settings.buttonsPositionStart[0]
         positionY = self._settings.buttonsPositionStart[1]
-        for i in range(0, len(cashierButtons)):
+        for i in range(0, 12):
             if i % 3 == 0:
                 positionY += self._settings.buttonDistanceY
                 positionX = self._settings.buttonsPositionStart[0]
             cashierButtons[i].setPosition(positionX, positionY)
             positionX += self._settings.buttonDistanceX
 
+        positionX = self._settings.longButtonsPositionStart[0]
+        positionY = self._settings.longButtonsPositionStart[1]
+        for i in range(12, len(cashierButtons)):
+            positionY += self._settings.longButtonDistanceY
+            cashierButtons[i].setPosition(positionX, positionY)
+            positionX += self._settings.longButtonDistanceX
+
+
         pass
 
-    # # Zabawne: xD
-    # def productScaleAnimation(self, product):
-    #     x, y = pygame.mouse.get_pos()
-    #     try:
-    #         if product.rect.collidepoint(x, y):
-    #             product.scale()
-    #         else:
-    #             product.setSize(x, y)
-    #     except AttributeError:
-    #         pass
-    #     pass
+    def displayCashRegisterValue(self, value):
+        value = str(value)
+        text = self.font.render(value, True, self._settings.cashRegisterValueColor)
+        position = self._settings.cashRegisterValuePosition[0] - 25 * len(value), self._settings.cashRegisterValuePosition[1]
+
+        if len(value) >= 13:
+            errorText = "ERROR!"
+            text = self.font.render(errorText, True, self._settings.cashRegisterValueColor)
+            position = self._settings.cashRegisterValuePosition[0] - 30 * len(errorText), self._settings.cashRegisterValuePosition[1]
+        self._screen.blit(text, position)
+        pass

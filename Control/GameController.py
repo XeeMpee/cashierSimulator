@@ -70,13 +70,27 @@ class GameController:
         # CashRegisterButtons:
         self._cashRegisterButtons = []
 
-        for i in range(0, 10):
+        j = 0
+        for i in 7, 8, 9, 4, 5, 6, 1, 2, 3, 'dot', 0, 'b':
             TextureMenager.buttonsTexturesAppend(str(i))
             TextureMenager.buttonsTexturesAppend(str(i) + "Clicked")
             self._cashRegisterButtons.append(Button(str(i), self._settings.numberButtonSize, (0,0), TextureMenager.getButtonTextures(str(i)), TextureMenager.getButtonTextures(str(i) + "Clicked")))
-            self.gameWindow.addToButtonsSpriteGroup(self._cashRegisterButtons[i])
+            self.gameWindow.addToButtonsSpriteGroup(self._cashRegisterButtons[j])
+            j += 1
             pass
+
+        for i in 'clear', 'add', 'weigh', 'done':
+            TextureMenager.buttonsTexturesAppend(str(i))
+            TextureMenager.buttonsTexturesAppend(str(i) + "Clicked")
+            self._cashRegisterButtons.append(Button(str(i), self._settings.longButtonSize, (0,0), TextureMenager.getButtonTextures(str(i)), TextureMenager.getButtonTextures(str(i) + "Clicked")))
+            self.gameWindow.addToButtonsSpriteGroup(self._cashRegisterButtons[j])
+            j += 1
+
+
         self.gameWindow.cashRegisterButtonPlace(self._cashRegisterButtons)
+
+        self._cashRegisterValue = '0'
+        # self.gameWindow.displayCashRegisterValue(self._cashRegisterValue)
 
         # Game Objects:
         TextureMenager.anotherTexturesAppend("plate")
@@ -88,6 +102,17 @@ class GameController:
 
         self._actualProduct = None
         self._productsCounter = 0
+
+
+    # Auxiliary funcs:
+
+    def appendToValue(self, n):
+        tmpStr = str(self._cashRegisterValue)
+        tmpStr += str(n)
+        self._cashRegisterValue = str(tmpStr)
+
+
+
 
 
     # --------------------------------------------------
@@ -210,9 +235,8 @@ class GameController:
                     return False
                 if event.key == pygame.K_g:
                     print("G pressed")
-                    self._generateProducts()
-                    # self._actualProduct = self.__products[0]
-                    # self.generateActualProduct()
+                    self._cashRegisterValue *= 10
+                    print(self._cashRegisterValue)
                 if event.key == pygame.K_1:
                     print("1 pressed")
                     # self.generateActualProduct()
@@ -225,6 +249,45 @@ class GameController:
                     if i.rect.collidepoint(x, y):
                         if i.getBlockedFlag() is False:
                             i.clicked()
+
+                            buttonName = i.getName()
+                            if buttonName == '0':
+                                print("0 clicked")
+                                if self._cashRegisterValue == '0':
+                                    break
+                                else:
+                                    self.appendToValue(0)
+                                    print("appending")
+                                pass
+
+                            for j in '1', '2', '3', '4', '5', '6', '7', '8', '9':
+                                if buttonName == j:
+                                    if self._cashRegisterValue == '0':
+                                        self._cashRegisterValue = ''
+                                    print(j + "clicked")
+                                    self.appendToValue(int(j))
+                                pass
+
+                            if buttonName == 'dot':
+                                self.appendToValue('.')
+                                print("dot clicked")
+                                pass
+                            elif buttonName == 'b':
+                                print("b clicked")
+                                pass
+                            elif buttonName == 'clear':
+                                self._cashRegisterValue = '0'
+                                print("clear clicked")
+                                pass
+                            elif buttonName == 'add':
+                                print("add clicked")
+                                pass
+                            elif buttonName == 'weigh':
+                                print("weigh clicked")
+                                pass
+                            elif buttonName == 'done':
+                                print("done clicked")
+                                pass
 
             if event.type == pygame.MOUSEBUTTONUP:
                 # self.newCustomerButtonClick()
@@ -241,10 +304,6 @@ class GameController:
                 for i in self._cashRegisterButtons:
                     if i.getBlockedFlag() is True:
                         i.unblock()
-
-
-
-
 
                 # ProductClicked:
                 try:
@@ -269,6 +328,7 @@ class GameController:
             self.gameWindow.drawAnotherSprites()
             self.gameWindow.drawProducts()
             self.gameWindow.drawButtons()
+            self.gameWindow.displayCashRegisterValue(self._cashRegisterValue)
             self.gameWindow.productScaleAnimation(self._actualProduct)
             con = self._eventsQueue()
 

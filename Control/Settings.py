@@ -29,6 +29,12 @@ class Settings:
             # CashRegister:
             self.cashRegisterSize = 650, 600
             self.cashRegisterPosition = 700, 120
+            self.__vStartX = 450
+            self.__vStartY = 85
+            self.cashRegisterValuePosition = (self.cashRegisterPosition[0] + self.__vStartX, self.cashRegisterPosition[1] + self.__vStartY)
+            self.cashRegisterValueSize = 60
+            self.cashRegisterValueColor = Colors.white
+            self.cashRegisterValueFont = "Liberation Serif"
 
             # CashRegisterButtons:
             self.__bStartX = 120
@@ -37,6 +43,13 @@ class Settings:
             self.buttonsPositionStart = (self.cashRegisterPosition[0] + self.__bStartX, self.cashRegisterPosition[1] + self.__bStartY)
             self.buttonDistanceX = 80
             self.buttonDistanceY = 80
+
+            self.longButtonSize = 150, 70
+            self.__lbStartX = 385
+            self.__lbStartY = 140
+            self.longButtonsPositionStart = (self.cashRegisterPosition[0] + self.__lbStartX, self.cashRegisterPosition[1] + self.__lbStartY)
+            self.longButtonDistanceY = 80
+            self.longButtonDistanceX = 5
 
             # NewCustomerButton
             self.newCustomerButtonPosition = 35, 20
