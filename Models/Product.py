@@ -37,6 +37,7 @@ class Product(Object):
         super().__init__(name, size, position, normalImage)
         self._scaled = False
         self.__settings = Settings.getInstance()
+        self._label = None
 
 
     def setName(self, name):
@@ -90,3 +91,8 @@ class Product(Object):
             # self.rect = self.image.get_rect()
 
 
+    def setLabel(self, hidden=False):
+        pass
+
+    def getLabel(self):
+        return self._label

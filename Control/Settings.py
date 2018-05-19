@@ -78,6 +78,8 @@ class Settings:
                                     (self.platePosition[0] + self.__marginLX, self.platePosition[1] + self.plateSize[1] - self.__marginLY),
                                     (self.platePosition[0] + self.plateSize[0] - self.__marginRX, self.platePosition[1] + self.plateSize[1] - self.__marginLY)]
 
+            self.productLabelColor = Colors.white
+            self.productLabelDisplace = 50, 60
 
             # Scale Coeff:
             self.productBasicSize = 100, 100

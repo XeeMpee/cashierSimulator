@@ -218,6 +218,7 @@ class GameController:
         self.gameWindow.clearProductsSpriteGroup()
         self.gameWindow.addToProductsSpriteGroup(self._actualProduct)
         self._actualProduct = self.gameWindow.setProductsPosition(self._actualProduct)
+        self._actualProduct.setLabel(True)
 
     # --------------------------------------------------
 
@@ -281,6 +282,7 @@ class GameController:
                                 pass
                             elif buttonName == 'add':
                                 print("add clicked")
+                                self._generateActualProduct()
                                 pass
                             elif buttonName == 'weigh':
                                 print("weigh clicked")
@@ -308,7 +310,8 @@ class GameController:
                 # ProductClicked:
                 try:
                     if self._actualProduct.rect.collidepoint(x, y):
-                        self._generateActualProduct()
+                        # self._generateActualProduct()
+                        print("ProductClicked")
                 except AttributeError:
                     pass
         pass
@@ -327,6 +330,7 @@ class GameController:
             self.gameWindow.fillScreen()
             self.gameWindow.drawAnotherSprites()
             self.gameWindow.drawProducts()
+            self.gameWindow.displayProductLabel(self._actualProduct)
             self.gameWindow.drawButtons()
             self.gameWindow.displayCashRegisterValue(self._cashRegisterValue)
             self.gameWindow.productScaleAnimation(self._actualProduct)

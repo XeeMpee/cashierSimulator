@@ -45,3 +45,9 @@ class WeightProduct(Product):
     def printInfo(self):
         super().printInfo()
         print("Weight: {}".format(self._weight))
+
+    def setLabel(self, hidden=False):
+        if hidden is False:
+            self._label = self._name.title() + ":" + str(self._weight) + "kg"
+        else:
+            self._label = self._name.title() + ":?" + "kg"

@@ -1,4 +1,5 @@
 import pygame
+from pygame import freetype
 from Control.Settings import *
 from Models.Product import *
 import Colors
@@ -64,7 +65,9 @@ class MainWindow:
 
         # Font
         pygame.font.init()
+        pygame.freetype.init()
         self.font = pygame.font.SysFont(self._settings.cashRegisterValueFont, self._settings.cashRegisterValueSize)
+        self.productFont = pygame.freetype.SysFont("Liberation Serif", 20)
         pass
 
 
@@ -155,5 +158,17 @@ class MainWindow:
             errorText = "ERROR!"
             text = self.font.render(errorText, True, self._settings.cashRegisterValueColor)
             position = self._settings.cashRegisterValuePosition[0] - 30 * len(errorText), self._settings.cashRegisterValuePosition[1]
+
         self._screen.blit(text, position)
         pass
+
+
+    def displayProductLabel(self, obj):
+        if obj is None:
+            return
+        label = obj.getLabel()
+        text = self.productFont.render(label, (255, 255, 255), (0, 0, 0), pygame.freetype.STYLE_DEFAULT, 0, 20)
+        position = list(obj.getPosition())
+        position[0] += self._settings.productLabelDisplace[0]
+        position[1] += self._settings.productLabelDisplace[1]
+        self._screen.blit(text[0], position)

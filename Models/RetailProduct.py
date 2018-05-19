@@ -44,3 +44,6 @@ class RetailProduct(Product):
     def printInfo(self):
         super().printInfo()
         print("Amount: {}".format(self._amount))
+
+    def setLabel(self, hidden=False):
+            self._label = self._name.title() + ":" + str(self._amount) + "szt."
