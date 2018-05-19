@@ -211,7 +211,7 @@ class GameController:
         if self._productsCounter == len(self._products):
             self._actualProduct = None
             self.gameWindow.clearProductsSpriteGroup()
-            self._newCustomerButton.unblock()
+            # self._newCustomerButton.unblock()
             return
         self._actualProduct = self._products[self._productsCounter]
         self._productsCounter += 1
@@ -293,7 +293,6 @@ class GameController:
                             elif buttonName == 'add':
                                 print("add clicked")
 
-
                                 if self._actualProduct is None:
                                     break
                                 if self._actualProduct.getClicked() is False:
@@ -310,6 +309,7 @@ class GameController:
                                         if self._actualProduct.getValue() == 0:
                                             pass
                                         else:
+                                            self._cashRegisterValue = '0'
                                             break
                                     if type(self._actualProduct) is WeightProduct:
                                         value = self._actualProduct.getWeightValue()
@@ -340,6 +340,14 @@ class GameController:
                                 pass
                             elif buttonName == 'done':
                                 print("done clicked")
+                                if self._actualProduct is not None:
+                                    pass
+                                else:
+                                    self._newCustomerButton.unblock()
+                                    print("Game over")
+                                    # TODO : KONIEC GRY
+
+
                                 pass
 
             if event.type == pygame.MOUSEBUTTONUP:
