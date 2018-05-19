@@ -38,6 +38,7 @@ class Product(Object):
         self._scaled = False
         self.__settings = Settings.getInstance()
         self._label = None
+        self._clicked = False
 
 
     def setName(self, name):
@@ -78,6 +79,8 @@ class Product(Object):
             # TODO: Ma odszkalowywać! xD
 
     def descale(self):
+        if self._clicked is True:
+            return
         if self._scaled is True:
             self._scaled = False
 
@@ -96,3 +99,17 @@ class Product(Object):
 
     def getLabel(self):
         return self._label
+
+    def getClicked(self):
+        return self._clicked
+
+    def setClicked(self):
+        self.scale()
+        self._clicked = True
+
+    def setUnclicked(self):
+        self._clicked = False
+        self.descale()
+
+    def getValue(self):
+        pass

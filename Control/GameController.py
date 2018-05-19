@@ -270,11 +270,21 @@ class GameController:
                                 pass
 
                             if buttonName == 'dot':
+                                if '.' in self._cashRegisterValue:
+                                    break
                                 self.appendToValue('.')
                                 print("dot clicked")
                                 pass
                             elif buttonName == 'b':
                                 print("b clicked")
+
+                                tmp = self._cashRegisterValue[:-1]
+                                self._cashRegisterValue = str(tmp)
+
+                                if self._cashRegisterValue == '':
+                                    self._cashRegisterValue = '0'
+                                    break
+
                                 pass
                             elif buttonName == 'clear':
                                 self._cashRegisterValue = '0'
@@ -282,10 +292,51 @@ class GameController:
                                 pass
                             elif buttonName == 'add':
                                 print("add clicked")
-                                self._generateActualProduct()
+
+
+                                if self._actualProduct is None:
+                                    break
+                                if self._actualProduct.getClicked() is False:
+                                    break
+                                if self._actualProduct.getClicked() is True:
+                                    if type(self._actualProduct) is RetailProduct:
+                                        amount = self._actualProduct.getValue() - int(self._cashRegisterValue)
+                                        try:
+                                            self._actualProduct.setAmount(amount)
+                                            self._actualProduct.setLabel()
+                                        except MyQuantityException:
+                                            print("Loooser!")
+                                            return
+                                        if self._actualProduct.getValue() == 0:
+                                            pass
+                                        else:
+                                            break
+                                    if type(self._actualProduct) is WeightProduct:
+                                        value = self._actualProduct.getWeightValue()
+                                        if value is None:
+                                            print("Looser!")
+                                            return
+                                        else:
+                                            if str(value) == self._cashRegisterValue:
+                                                pass
+                                            else:
+                                                print("Looser!")
+                                                return
+                                        pass
+                                    self._generateActualProduct()
+                                    self._cashRegisterValue = '0'
                                 pass
                             elif buttonName == 'weigh':
                                 print("weigh clicked")
+                                if self._actualProduct is None:
+                                    break
+
+                                if type(self._actualProduct) is RetailProduct:
+                                    # TODO: PRZEGRANA
+                                    return 0
+                                if self._actualProduct.getClicked() is False:
+                                    break
+                                self._actualProduct.setLabel()
                                 pass
                             elif buttonName == 'done':
                                 print("done clicked")
@@ -311,6 +362,11 @@ class GameController:
                 try:
                     if self._actualProduct.rect.collidepoint(x, y):
                         # self._generateActualProduct()
+                        if self._actualProduct.getClicked() is False:
+                            self._actualProduct.setClicked()
+                        elif self._actualProduct.getClicked() is True:
+                            self._actualProduct.setUnclicked()
+
                         print("ProductClicked")
                 except AttributeError:
                     pass

@@ -31,7 +31,7 @@ class RetailProduct(Product):
         self._amount = amount
 
     def setAmount(self, amount):
-        if amount <= 0:
+        if amount < 0:
             raise MyQuantityException("Product amount must be greater than 0!")
         self._amount = amount
         pass
@@ -47,3 +47,7 @@ class RetailProduct(Product):
 
     def setLabel(self, hidden=False):
             self._label = self._name.title() + ":" + str(self._amount) + "szt."
+
+
+    def getValue(self):
+        return self._amount
