@@ -178,186 +178,6 @@ class MainWindow:
         self._screen.blit(text[0], position)
 
 
-    def showLoseMessage(self, points):
-
-        class tmpClass:
-            def __init__(self, screen, points):
-                self.points = points
-                self._screen = screen
-
-                self.looseMessageLabel = "GameOver! You Loose :("
-                self.looseMessagePosition = 250, 200
-                self.pointsMessage = "Your score: " + str(points)
-                self.pointsMessagePosition = 600, 300
-                self.font = pygame.freetype.SysFont("Liberation Serif", 80, True)
-                self.pointsFont = pygame.freetype.SysFont("Liberation Serif", 40, True)
-
-                TextureMenager.buttonsTexturesAppend("quit")
-                TextureMenager.buttonsTexturesAppend("quitClicked")
-                TextureMenager.buttonsTexturesAppend("tryagain")
-                TextureMenager.buttonsTexturesAppend("tryagainClicked")
-
-                self.buttons = []
-                self.tryagainButton = Button("tryagain", (300, 150), (300, 400), TextureMenager.getButtonTextures("tryagain"), TextureMenager.getButtonTextures("tryagainClicked"))
-                self.quitButton = Button("quit", (300, 150), (800, 400), TextureMenager.getButtonTextures("quit"), TextureMenager.getButtonTextures("quitClicked"))
-                self.spritesGroup = pygame.sprite.Group()
-                self.spritesGroup.add(self.tryagainButton)
-                self.spritesGroup.add(self.quitButton)
-                self.buttons.append(self.quitButton)
-                self.buttons.append(self.tryagainButton)
-
-                pass
-
-            def showLabel(self):
-                text = self.font.render(self.looseMessageLabel, (0, 0, 0))
-                points = self.pointsFont.render(self.pointsMessage, (0, 0, 0))
-                self._screen.blit(text[0], self.looseMessagePosition)
-                # self._screen.blit(points[0], self.pointsMessagePosition)
-
-            def localEventsQueue(self):
-                for event in pygame.event.get():
-                    if event.type == pygame.KEYUP:
-                        if event.key == pygame.K_ESCAPE:
-                            return False
-                    if event.type == pygame.MOUSEBUTTONDOWN:
-                        print("clicked")
-                        x, y = pygame.mouse.get_pos()
-                        for i in self.buttons:
-                            if i.rect.collidepoint(x, y):
-                                print("BUTTON CLICKED!")
-                                i.block()
-
-                    if event.type == pygame.MOUSEBUTTONUP:
-                        x, y = pygame.mouse.get_pos()
-                        for i in self.buttons:
-                            i.unblock()
-                            if i.rect.collidepoint(x, y):
-                                if i.getName() == "quit":
-                                    i.clicked()
-                                    exit(0)
-                                    return 0
-                                if i.getName() == "tryagain":
-                                    i.clicked()
-                                    return 2
-
-                                pass
-
-                        pass
-                return True
-                pass
-
-
-        controlClass = tmpClass(self._screen, points)
-        con = 1
-        while con == 1:
-            self.fillScreen()
-            controlClass.showLabel()
-            controlClass.spritesGroup.draw(self._screen)
-            con = controlClass.localEventsQueue()
-            pygame.display.update()
-
-        if con == 2:
-            return True
-
-        if con == 0:
-            return False
-
-
-    def showWinMessage(self, myTime, average):
-
-        class tmpClass:
-
-            def __init__(self, screen, myTime, average):
-                self._screen = screen
-                self._myTime = myTime
-                self._average = average
-
-                self.spritesGroup = pygame.sprite.Group()
-
-                self.looseMessageLabel = "Good Job! Your results:"
-                self.looseMessagePosition = 250, 200
-                self.timeMessage = "Time: " + str(self._myTime)
-                self.averageTimeMessage = "Average time: " + str(self._average)
-                self.timeMessagePosition = 250, 300
-                self.avTimeMessagePosition = 250, 350
-                self.font = pygame.freetype.SysFont("Liberation Serif", 80, True)
-                self.timeFont = pygame.freetype.SysFont("Liberation Serif", 40, True)
-
-                TextureMenager.buttonsTexturesAppend("quit")
-                TextureMenager.buttonsTexturesAppend("quitClicked")
-                TextureMenager.buttonsTexturesAppend("tryagain")
-                TextureMenager.buttonsTexturesAppend("tryagainClicked")
-
-                self.buttons = []
-                self.tryagainButton = Button("tryagain", (300, 150), (300, 500), TextureMenager.getButtonTextures("tryagain"), TextureMenager.getButtonTextures("tryagainClicked"))
-                self.quitButton = Button("quit", (300, 150), (800, 500), TextureMenager.getButtonTextures("quit"), TextureMenager.getButtonTextures("quitClicked"))
-                self.spritesGroup = pygame.sprite.Group()
-                self.spritesGroup.add(self.tryagainButton)
-                self.spritesGroup.add(self.quitButton)
-                self.buttons.append(self.quitButton)
-                self.buttons.append(self.tryagainButton)
-
-                pass
-
-            def showLabel(self):
-                text = self.font.render(self.looseMessageLabel, (0, 0, 0))
-                timeRes = self.timeFont.render(self.timeMessage, (0, 0, 0))
-                avTimeRes = self.timeFont.render(self.averageTimeMessage, (0, 0, 0))
-                self._screen.blit(text[0], self.looseMessagePosition)
-                self._screen.blit(timeRes[0], self.timeMessagePosition)
-                self._screen.blit(avTimeRes[0], self.avTimeMessagePosition)
-
-            def localEventsQueue(self):
-                for event in pygame.event.get():
-                    if event.type == pygame.KEYUP:
-                        if event.key == pygame.K_ESCAPE:
-                            exit(0)
-                            return False
-                    if event.type == pygame.MOUSEBUTTONDOWN:
-                        print("clicked")
-                        x, y = pygame.mouse.get_pos()
-                        for i in self.buttons:
-                            if i.rect.collidepoint(x, y):
-                                print("BUTTON CLICKED!")
-                                i.block()
-
-                    if event.type == pygame.MOUSEBUTTONUP:
-                        x, y = pygame.mouse.get_pos()
-                        for i in self.buttons:
-                            i.unblock()
-                            if i.rect.collidepoint(x, y):
-                                if i.getName() == "quit":
-                                    i.clicked()
-                                    exit(0)
-                                    return 0
-                                if i.getName() == "tryagain":
-                                    i.clicked()
-                                    return 2
-
-                                pass
-
-                        pass
-                return True
-                pass
-
-
-        controlClass = tmpClass(self._screen, myTime, average)
-        con = 1
-        while con == 1:
-            self.fillScreen()
-            controlClass.showLabel()
-            controlClass.spritesGroup.draw(self._screen)
-            con = controlClass.localEventsQueue()
-            pygame.display.update()
-
-
-        if con == 2:
-            return True
-
-        if con == 0:
-            return False
-
-
 
     def showMenu(self):
 
@@ -369,7 +189,7 @@ class MainWindow:
                 self.spritesGroup = pygame.sprite.Group()
 
                 self.startMessageLabel = "CASHIER SIMULATOR"
-                self.startMessagePosition = 250, 200
+                self.startMessagePosition = 250, 120
                 self.font = pygame.freetype.SysFont("Liberation Serif", 80, True)
 
                 TextureMenager.buttonsTexturesAppend("quit")
@@ -441,5 +261,190 @@ class MainWindow:
 
         if con == 0:
             return False
+
+
+
+
+    def showLoseMessage(self, points):
+
+        class tmpClass:
+            def __init__(self, screen, reason):
+                self.points = reason
+                self._screen = screen
+
+                self.looseMessageLabel = "Wrong action! You failed!"
+                self.looseMessagePosition = 250, 200
+                self.pointsMessage = "Reason: " + str(reason)
+                self.pointsMessagePosition = 250, 300
+                self.font = pygame.freetype.SysFont("Liberation Serif", 80, True)
+                self.pointsFont = pygame.freetype.SysFont("Liberation Serif", 40, True)
+
+                TextureMenager.buttonsTexturesAppend("quit")
+                TextureMenager.buttonsTexturesAppend("quitClicked")
+                TextureMenager.buttonsTexturesAppend("tryagain")
+                TextureMenager.buttonsTexturesAppend("tryagainClicked")
+
+                self.buttons = []
+                self.tryagainButton = Button("tryagain", (300, 150), (300, 400), TextureMenager.getButtonTextures("tryagain"), TextureMenager.getButtonTextures("tryagainClicked"))
+                self.quitButton = Button("quit", (300, 150), (800, 400), TextureMenager.getButtonTextures("quit"), TextureMenager.getButtonTextures("quitClicked"))
+                self.spritesGroup = pygame.sprite.Group()
+                self.spritesGroup.add(self.tryagainButton)
+                self.spritesGroup.add(self.quitButton)
+                self.buttons.append(self.quitButton)
+                self.buttons.append(self.tryagainButton)
+
+                pass
+
+            def showLabel(self):
+                text = self.font.render(self.looseMessageLabel, (0, 0, 0))
+                points = self.pointsFont.render(self.pointsMessage, (0, 0, 0))
+                self._screen.blit(text[0], self.looseMessagePosition)
+                self._screen.blit(points[0], self.pointsMessagePosition)
+
+            def localEventsQueue(self):
+                for event in pygame.event.get():
+                    if event.type == pygame.KEYUP:
+                        if event.key == pygame.K_ESCAPE:
+                            return False
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        print("clicked")
+                        x, y = pygame.mouse.get_pos()
+                        for i in self.buttons:
+                            if i.rect.collidepoint(x, y):
+                                print("BUTTON CLICKED!")
+                                i.block()
+
+                    if event.type == pygame.MOUSEBUTTONUP:
+                        x, y = pygame.mouse.get_pos()
+                        for i in self.buttons:
+                            i.unblock()
+                            if i.rect.collidepoint(x, y):
+                                if i.getName() == "quit":
+                                    i.clicked()
+                                    # exit(0)
+                                    return 0
+                                if i.getName() == "tryagain":
+                                    i.clicked()
+                                    return 2
+
+                                pass
+
+                        pass
+                return True
+                pass
+
+
+        controlClass = tmpClass(self._screen, points)
+        con = 1
+        while con == 1:
+            self.fillScreen()
+            controlClass.showLabel()
+            controlClass.spritesGroup.draw(self._screen)
+            con = controlClass.localEventsQueue()
+            pygame.display.update()
+
+        if con == 2:
+            return True
+
+        if con == 0:
+            self.showMenu()
+
+
+    def showWinMessage(self, myTime, average):
+
+        class tmpClass:
+
+            def __init__(self, screen, myTime, average):
+                self._screen = screen
+                self._myTime = myTime
+                self._average = average
+
+                self.spritesGroup = pygame.sprite.Group()
+
+                self.looseMessageLabel = "Good Job! Your results:"
+                self.looseMessagePosition = 250, 200
+                self.timeMessage = "Time: " + str(self._myTime)
+                self.averageTimeMessage = "Average time: " + str(self._average)
+                self.timeMessagePosition = 250, 300
+                self.avTimeMessagePosition = 250, 350
+                self.font = pygame.freetype.SysFont("Liberation Serif", 80, True)
+                self.timeFont = pygame.freetype.SysFont("Liberation Serif", 40, True)
+
+                TextureMenager.buttonsTexturesAppend("quit")
+                TextureMenager.buttonsTexturesAppend("quitClicked")
+                TextureMenager.buttonsTexturesAppend("tryagain")
+                TextureMenager.buttonsTexturesAppend("tryagainClicked")
+
+                self.buttons = []
+                self.tryagainButton = Button("tryagain", (300, 150), (300, 500), TextureMenager.getButtonTextures("tryagain"), TextureMenager.getButtonTextures("tryagainClicked"))
+                self.quitButton = Button("quit", (300, 150), (800, 500), TextureMenager.getButtonTextures("quit"), TextureMenager.getButtonTextures("quitClicked"))
+                self.spritesGroup = pygame.sprite.Group()
+                self.spritesGroup.add(self.tryagainButton)
+                self.spritesGroup.add(self.quitButton)
+                self.buttons.append(self.quitButton)
+                self.buttons.append(self.tryagainButton)
+
+                pass
+
+            def showLabel(self):
+                text = self.font.render(self.looseMessageLabel, (0, 0, 0))
+                timeRes = self.timeFont.render(self.timeMessage, (0, 0, 0))
+                avTimeRes = self.timeFont.render(self.averageTimeMessage, (0, 0, 0))
+                self._screen.blit(text[0], self.looseMessagePosition)
+                self._screen.blit(timeRes[0], self.timeMessagePosition)
+                self._screen.blit(avTimeRes[0], self.avTimeMessagePosition)
+
+            def localEventsQueue(self):
+                for event in pygame.event.get():
+                    if event.type == pygame.KEYUP:
+                        if event.key == pygame.K_ESCAPE:
+                            exit(0)
+                            return False
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        print("clicked")
+                        x, y = pygame.mouse.get_pos()
+                        for i in self.buttons:
+                            if i.rect.collidepoint(x, y):
+                                print("BUTTON CLICKED!")
+                                i.block()
+
+                    if event.type == pygame.MOUSEBUTTONUP:
+                        x, y = pygame.mouse.get_pos()
+                        for i in self.buttons:
+                            i.unblock()
+                            if i.rect.collidepoint(x, y):
+                                if i.getName() == "quit":
+                                    i.clicked()
+                                    # exit(0)
+                                    return 0
+                                if i.getName() == "tryagain":
+                                    i.clicked()
+                                    return 2
+
+                                pass
+
+                        pass
+                return True
+                pass
+
+
+        controlClass = tmpClass(self._screen, myTime, average)
+        con = 1
+        while con == 1:
+            self.fillScreen()
+            controlClass.showLabel()
+            controlClass.spritesGroup.draw(self._screen)
+            con = controlClass.localEventsQueue()
+            pygame.display.update()
+
+
+        if con == 2:
+            return True
+
+        if con == 0:
+            # return False
+            self.showMenu()
+
+
 
 

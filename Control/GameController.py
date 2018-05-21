@@ -324,7 +324,7 @@ class GameController:
                                             self._actualProduct.setLabel()
                                         except MyQuantityException:
                                             print("Loooser!")
-                                            self.gameWindow.showLoseMessage(self.points)
+                                            self.gameWindow.showLoseMessage("You entered more products than appeared.")
                                             self.clearGame()
                                             return True
                                         if self._actualProduct.getValue() == 0:
@@ -336,7 +336,6 @@ class GameController:
                                         value = self._actualProduct.getWeightValue()
                                         if value is None:
                                             print("Looser!")
-                                            self.gameWindow.showLoseMessage(self.points)
                                             self.clearGame()
                                             return True
                                         else:
@@ -344,7 +343,8 @@ class GameController:
                                                 pass
                                             else:
                                                 print("Looser!")
-                                                self.gameWindow.showLoseMessage(self.points)
+                                                # self.gameWindow.showLoseMessage("You didn't weigh product.")
+                                                self.gameWindow.showLoseMessage("You entered incorrect weight.")
                                                 self.clearGame()
                                                 return True
                                         pass
