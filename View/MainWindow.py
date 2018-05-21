@@ -311,6 +311,7 @@ class MainWindow:
                 for event in pygame.event.get():
                     if event.type == pygame.KEYUP:
                         if event.key == pygame.K_ESCAPE:
+                            exit(0)
                             return False
                     if event.type == pygame.MOUSEBUTTONDOWN:
                         print("clicked")
@@ -355,4 +356,90 @@ class MainWindow:
 
         if con == 0:
             return False
+
+
+
+    def showMenu(self):
+
+        class tmpClass:
+
+            def __init__(self, screen):
+                self._screen = screen
+
+                self.spritesGroup = pygame.sprite.Group()
+
+                self.startMessageLabel = "CASHIER SIMULATOR"
+                self.startMessagePosition = 250, 200
+                self.font = pygame.freetype.SysFont("Liberation Serif", 80, True)
+
+                TextureMenager.buttonsTexturesAppend("quit")
+                TextureMenager.buttonsTexturesAppend("quitClicked")
+                TextureMenager.buttonsTexturesAppend("start")
+                TextureMenager.buttonsTexturesAppend("startClicked")
+
+                self.buttons = []
+                self.startButton = Button("start", (300, 150), (550, 300), TextureMenager.getButtonTextures("start"), TextureMenager.getButtonTextures("startClicked"))
+                self.quitButton = Button("quit", (300, 150), (550, 500), TextureMenager.getButtonTextures("quit"), TextureMenager.getButtonTextures("quitClicked"))
+                self.spritesGroup = pygame.sprite.Group()
+                self.spritesGroup.add(self.startButton)
+                self.spritesGroup.add(self.quitButton)
+                self.buttons.append(self.quitButton)
+                self.buttons.append(self.startButton)
+
+                pass
+
+            def showLabel(self):
+                text = self.font.render(self.startMessageLabel, (0, 0, 0))
+                self._screen.blit(text[0], self.startMessagePosition)
+
+            def localEventsQueue(self):
+                for event in pygame.event.get():
+                    if event.type == pygame.KEYUP:
+                        if event.key == pygame.K_ESCAPE:
+                            exit(0)
+                            return False
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        print("clicked")
+                        x, y = pygame.mouse.get_pos()
+                        for i in self.buttons:
+                            if i.rect.collidepoint(x, y):
+                                print("BUTTON CLICKED!")
+                                i.block()
+
+                    if event.type == pygame.MOUSEBUTTONUP:
+                        x, y = pygame.mouse.get_pos()
+                        for i in self.buttons:
+                            i.unblock()
+                            if i.rect.collidepoint(x, y):
+                                if i.getName() == "quit":
+                                    i.clicked()
+                                    exit(0)
+                                    return 0
+                                if i.getName() == "start":
+                                    i.clicked()
+                                    return 2
+
+                                pass
+
+                        pass
+                return True
+                pass
+
+
+        controlClass = tmpClass(self._screen)
+        con = 1
+        while con == 1:
+            self.fillScreen()
+            controlClass.showLabel()
+            controlClass.spritesGroup.draw(self._screen)
+            con = controlClass.localEventsQueue()
+            pygame.display.update()
+
+
+        if con == 2:
+            return True
+
+        if con == 0:
+            return False
+
 

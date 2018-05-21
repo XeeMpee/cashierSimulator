@@ -427,6 +427,9 @@ class GameController:
     # --------------------------------------------------
     # GameLoop:
     def run(self):
+
+        self.gameWindow.showMenu()
+
         con = True
         while con:
             self.gameWindow.fillScreen()
