@@ -1,9 +1,13 @@
 import pygame
+# from tkinter import *
+# from tkinter import messagebox
 from pygame import freetype
 from Control.Settings import *
 from Models.Product import *
 import Colors
 import random
+from Models.Button import *
+from View.TexturesMenager import *
 
 class MainWindow:
 
@@ -172,3 +176,91 @@ class MainWindow:
         position[0] += self._settings.productLabelDisplace[0]
         position[1] += self._settings.productLabelDisplace[1]
         self._screen.blit(text[0], position)
+
+
+    def showLoseMessage(self, points):
+
+        class tmpClass:
+            def __init__(self, screen, points):
+                self.points = points
+                self._screen = screen
+
+                self.looseMessageLabel = "GameOver! You Loose :("
+                self.looseMessagePosition = 250, 200
+                self.pointsMessage = "Your score: " + str(points)
+                self.pointsMessagePosition = 600, 300
+                self.font = pygame.freetype.SysFont("Liberation Serif", 80, True)
+                self.pointsFont = pygame.freetype.SysFont("Liberation Serif", 40, True)
+
+                TextureMenager.buttonsTexturesAppend("quit")
+                TextureMenager.buttonsTexturesAppend("quitClicked")
+                TextureMenager.buttonsTexturesAppend("tryagain")
+                TextureMenager.buttonsTexturesAppend("tryagainClicked")
+
+                self.buttons = []
+                self.tryagainButton = Button("tryagain", (300, 150), (300, 400), TextureMenager.getButtonTextures("tryagain"), TextureMenager.getButtonTextures("tryagainClicked"))
+                self.quitButton = Button("quit", (300, 150), (800, 400), TextureMenager.getButtonTextures("quit"), TextureMenager.getButtonTextures("quitClicked"))
+                self.spritesGroup = pygame.sprite.Group()
+                self.spritesGroup.add(self.tryagainButton)
+                self.spritesGroup.add(self.quitButton)
+                self.buttons.append(self.quitButton)
+                self.buttons.append(self.tryagainButton)
+
+                pass
+
+            def showLabel(self):
+                text = self.font.render(self.looseMessageLabel, (0, 0, 0))
+                points = self.pointsFont.render(self.pointsMessage, (0, 0, 0))
+                self._screen.blit(text[0], self.looseMessagePosition)
+                self._screen.blit(points[0], self.pointsMessagePosition)
+
+            def localEventsQueue(self):
+                for event in pygame.event.get():
+                    if event.type == pygame.KEYUP:
+                        if event.key == pygame.K_ESCAPE:
+                            return False
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        print("clicked")
+                        x, y = pygame.mouse.get_pos()
+                        for i in self.buttons:
+                            if i.rect.collidepoint(x, y):
+                                print("BUTTON CLICKED!")
+                                i.block()
+
+                    if event.type == pygame.MOUSEBUTTONUP:
+                        x, y = pygame.mouse.get_pos()
+                        for i in self.buttons:
+                            i.unblock()
+                            if i.rect.collidepoint(x, y):
+                                if i.getName() == "quit":
+                                    i.clicked()
+                                    exit(0)
+                                    return 0
+                                if i.getName() == "tryagain":
+                                    i.clicked()
+                                    return 2
+
+                                pass
+
+                        pass
+                return True
+                pass
+
+
+        controlClass = tmpClass(self._screen, points)
+        con = 1
+        while con == 1:
+            self.fillScreen()
+            controlClass.showLabel()
+            controlClass.spritesGroup.draw(self._screen)
+            con = controlClass.localEventsQueue()
+            pygame.display.update()
+
+        if con == 2:
+            return True
+
+        if con == 0:
+            return False
+
+
+

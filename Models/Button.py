@@ -25,16 +25,18 @@ class Button(Object):
 
     """
 
-    def __init__(self, name, size=(60, 60), position=(0, 0), normalImage=None, clickedImage=None):
+    def __init__(self, name, size=(60, 60), position=(0, 0), normalImage=None, clickedImage=None, clickedFun=None):
         super().__init__(name, size, position, normalImage)
         self._clickedImage = clickedImage
         self._blocked = False
+        self.clickedFun = clickedFun
 
     def clicked(self):
         if self._blocked is False:
             self.block()
         elif self._blocked is True:
-            # self.unblock()
+            if self.clickedFun is not None:
+                self.clickedFun()
             return
 
     def block(self):
@@ -50,4 +52,5 @@ class Button(Object):
 
     def hardSetBlockedFlag(self, boolValue):
         self._blocked = boolValue
+
 

@@ -85,3 +85,9 @@ class Settings:
             self.productBasicSize = 100, 100
             self.productScaledSize = 160, 160
 
+
+            # PopUp LooseMessage:
+            self._looseMessageDisplacementX = 0
+            self._looseMessageDisplacementY = 0
+            self.looseMessagePosition = self._looseMessageDisplacementX + self.windowSize[0] // 2, self._looseMessageDisplacementY + self.windowSize[1] // 2
+

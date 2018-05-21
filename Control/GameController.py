@@ -103,6 +103,8 @@ class GameController:
         self._actualProduct = None
         self._productsCounter = 0
 
+        self.points = 0
+
 
     # Auxiliary funcs:
 
@@ -223,6 +225,15 @@ class GameController:
     # --------------------------------------------------
 
 
+    def clearGame(self):
+        self._actualProduct = None
+        self.gameWindow.clearProductsSpriteGroup()
+        self._cashRegisterValue = '0'
+        self._newCustomerButton.unblock()
+
+        for i in self._cashRegisterButtons:
+            i.unblock()
+
     # --------------------------------------------------
     # GameEvents:
     def _eventsQueue(self):
@@ -305,7 +316,9 @@ class GameController:
                                             self._actualProduct.setLabel()
                                         except MyQuantityException:
                                             print("Loooser!")
-                                            return
+                                            self.gameWindow.showLoseMessage(self.points)
+                                            self.clearGame()
+                                            return True
                                         if self._actualProduct.getValue() == 0:
                                             pass
                                         else:
@@ -315,13 +328,17 @@ class GameController:
                                         value = self._actualProduct.getWeightValue()
                                         if value is None:
                                             print("Looser!")
-                                            return
+                                            self.gameWindow.showLoseMessage(self.points)
+                                            self.clearGame()
+                                            return True
                                         else:
                                             if str(value) == self._cashRegisterValue:
                                                 pass
                                             else:
                                                 print("Looser!")
-                                                return
+                                                self.gameWindow.showLoseMessage(self.points)
+                                                self.clearGame()
+                                                return True
                                         pass
                                     self._generateActualProduct()
                                     self._cashRegisterValue = '0'
@@ -333,6 +350,7 @@ class GameController:
 
                                 if type(self._actualProduct) is RetailProduct:
                                     # TODO: PRZEGRANA
+                                    self.gameWindow.showLoseMessage(self.points)
                                     return 0
                                 if self._actualProduct.getClicked() is False:
                                     break
