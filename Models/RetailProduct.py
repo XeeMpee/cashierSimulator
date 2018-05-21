@@ -28,6 +28,7 @@ class RetailProduct(Product):
 
     def __init__(self, name, amount, size=(60, 60), position=(0, 0), normalImage=None ):
         super().__init__(name, size, position, normalImage)
+        self._startAmount = amount
         self._amount = amount
 
     def setAmount(self, amount):
@@ -51,3 +52,7 @@ class RetailProduct(Product):
 
     def getValue(self):
         return self._amount
+
+
+    def getProductsNumber(self):
+        return self._startAmount

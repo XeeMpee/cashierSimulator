@@ -39,6 +39,8 @@ class Product(Object):
         self.__settings = Settings.getInstance()
         self._label = None
         self._clicked = False
+        self._generatedTime = 0
+        self._addingTime = 0
 
 
     def setName(self, name):
@@ -113,3 +115,24 @@ class Product(Object):
 
     def getValue(self):
         pass
+
+    def setGenerateTime(self, time):
+        if time < 0:
+            raise MyDataRangeException("time has to bee greater than 0!")
+        self._generatedTime = time
+
+    def getGenerateTime(self):
+        return self._generatedTime
+
+    def setAddingTime(self, time):
+        if time < 0:
+            raise MyDataRangeException("time has to bee greater than 0!")
+        self._addingTime = time
+
+    def getAddingTime(self):
+        return self._addingTime
+
+
+    def getProductsNumber(self):
+        pass
+

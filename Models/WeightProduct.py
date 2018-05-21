@@ -59,3 +59,7 @@ class WeightProduct(Product):
 
     def getValue(self):
         return self._weight
+
+
+    def getProductsNumber(self):
+        return 1

@@ -7,6 +7,7 @@ from Control.Settings import *
 from View.TexturesMenager import *
 from View.MainWindow import *
 import random
+import time
 
 
 class GameController:
@@ -89,7 +90,8 @@ class GameController:
 
         self.gameWindow.cashRegisterButtonPlace(self._cashRegisterButtons)
 
-        self._cashRegisterValue = '0'
+        self._cashRegisterValue = None
+        self.resetCashRegisterValue()
         # self.gameWindow.displayCashRegisterValue(self._cashRegisterValue)
 
         # Game Objects:
@@ -102,6 +104,7 @@ class GameController:
 
         self._actualProduct = None
         self._productsCounter = 0
+        self._allProductsCounter = 0
 
         self.points = 0
 
@@ -136,6 +139,7 @@ class GameController:
 
     def _generateProducts(self):
 
+        self._actualProduct = 0
         # Value of maximum products quantity:
         numOfProducts = random.randint(1, 20)
         print(numOfProducts)
@@ -221,15 +225,19 @@ class GameController:
         self.gameWindow.addToProductsSpriteGroup(self._actualProduct)
         self._actualProduct = self.gameWindow.setProductsPosition(self._actualProduct)
         self._actualProduct.setLabel(True)
+        self._actualProduct.setGenerateTime(time.time())
 
     # --------------------------------------------------
 
+    def resetCashRegisterValue(self):
+        self._cashRegisterValue = '0'
 
     def clearGame(self):
         self._actualProduct = None
         self.gameWindow.clearProductsSpriteGroup()
-        self._cashRegisterValue = '0'
+        self.resetCashRegisterValue()
         self._newCustomerButton.unblock()
+        self._allProductsCounter = 0
 
         for i in self._cashRegisterButtons:
             i.unblock()
@@ -293,12 +301,12 @@ class GameController:
                                 self._cashRegisterValue = str(tmp)
 
                                 if self._cashRegisterValue == '':
-                                    self._cashRegisterValue = '0'
+                                    self.resetCashRegisterValue()
                                     break
 
                                 pass
                             elif buttonName == 'clear':
-                                self._cashRegisterValue = '0'
+                                self.resetCashRegisterValue()
                                 print("clear clicked")
                                 pass
                             elif buttonName == 'add':
@@ -322,7 +330,7 @@ class GameController:
                                         if self._actualProduct.getValue() == 0:
                                             pass
                                         else:
-                                            self._cashRegisterValue = '0'
+                                            self.resetCashRegisterValue()
                                             break
                                     if type(self._actualProduct) is WeightProduct:
                                         value = self._actualProduct.getWeightValue()
@@ -340,8 +348,12 @@ class GameController:
                                                 self.clearGame()
                                                 return True
                                         pass
+                                    self._actualProduct.setAddingTime(time.time())
+                                    self._allProductsCounter += self._actualProduct.getProductsNumber()
+                                    print("All products counter: ")
+                                    print(self._allProductsCounter)
                                     self._generateActualProduct()
-                                    self._cashRegisterValue = '0'
+                                    self.resetCashRegisterValue()
                                 pass
                             elif buttonName == 'weigh':
                                 print("weigh clicked")
@@ -358,14 +370,22 @@ class GameController:
                                 pass
                             elif buttonName == 'done':
                                 print("done clicked")
-                                if self._actualProduct is not None:
+                                if self._actualProduct is not None or self._newCustomerButton.getBlockedFlag() is False:
                                     pass
                                 else:
+
+                                    average = 0
+                                    for i in self._products:
+                                        average += i.getAddingTime() - i.getGenerateTime()
+                                    average = average / self._allProductsCounter
+
+                                    roundTime = time.time() - self._products[0].getGenerateTime()
+
+                                    print("Average: " + str(average) + "/nRound time: " + str(roundTime))
                                     self._newCustomerButton.unblock()
                                     print("Game over")
-                                    # TODO : KONIEC GRY
-
-
+                                    self.gameWindow.showWinMessage(roundTime, average)
+                                    self.clearGame()
                                 pass
 
             if event.type == pygame.MOUSEBUTTONUP:
