@@ -362,8 +362,9 @@ class GameController:
 
                                 if type(self._actualProduct) is RetailProduct:
                                     # TODO: PRZEGRANA
-                                    self.gameWindow.showLoseMessage(self.points)
-                                    return 0
+                                    self.gameWindow.showLoseMessage("You tried weigh retail product.")
+                                    self.clearGame()
+                                    return True
                                 if self._actualProduct.getClicked() is False:
                                     break
                                 self._actualProduct.setLabel()
